@@ -1,26 +1,35 @@
 class Solution {
 public:
-    int majorityElement(vector<int>& nums) {
-        int mid=nums.size()>>1;
-        int begin=0,end=nums.size()-1;
-        int idx=Partition(nums,begin,end);
-        while(idx!=mid){
-            if(idx>mid){
-                end=idx-1;
-                idx=Partition(nums,begin,end);
+    vector<int> getLeastNumbers(vector<int>& arr, int k) {
+        if(arr.size()==0||k<=0||k>arr.size()){
+            return {};
+        }
+        int begin=0,end=arr.size()-1;
+        int idx=Partition(arr,begin,end);
+        while(idx!=k-1){
+            if(idx==-1){
+                return {};
+            }
+            if(idx<k-1){
+                begin=idx+1;
+                idx=Partition(arr,begin,end);
             }
             else{
-                begin=idx+1;
-                idx=Partition(nums,begin,end);
+                end=idx-1;
+                idx=Partition(arr,begin,end);
             }
         }
-        if(!checkMoreThanHalf(nums,nums[idx])){
-            return -1;
+        vector<int> res;
+        for(int i=0;i<k;i++){
+            res.push_back(arr[i]);
         }
-        return nums[idx];
+        return res;
     }
 private:
     int Partition(vector<int>& nums,int begin,int end){
+        if(begin>end){
+            return -1;
+        }
         int idx=getRandomInRange(begin,end);
         swap(&nums[idx],&nums[end]);
         int smallidx=begin-1;
@@ -46,18 +55,5 @@ private:
 
     int getRandomInRange(int begin,int end){
         return begin+rand()%(end-begin+1);
-    }
-
-    bool checkMoreThanHalf(vector<int>& nums,int val){
-        int cnt=0;
-        for(int i=0;i<nums.size();i++){
-            if(nums[i]==val){
-                cnt++;
-            }
-        }
-        if(cnt>nums.size()/2){
-            return true;
-        }
-        return false;
     }
 };
