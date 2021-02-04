@@ -5,16 +5,35 @@ public:
     }
     
     int max_value() {
-
+        if(maxq.empty()){
+            return -1;
+        }
+        return maxq.front();
     }
     
     void push_back(int value) {
-
+        while(!maxq.empty()&&value>maxq.back()){
+            maxq.pop_back();
+        }
+        maxq.push_back(value);
+        data.push(value);
+        return;
     }
     
     int pop_front() {
-
+        if(maxq.empty()){
+            return -1;
+        }
+        int val=data.front();
+        data.pop();
+        if(val==maxq.front()){
+            maxq.pop_front();
+        }
+        return val;
     }
+private:
+    queue<int> data;
+    deque<int> maxq;
 };
 
 /**
