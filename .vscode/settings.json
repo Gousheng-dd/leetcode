@@ -8,6 +8,9 @@
         "iostream": "cpp",
         "utility": "cpp",
         "xiosbase": "cpp",
-        "cstdlib": "cpp"
+        "cstdlib": "cpp",
+        "algorithm": "cpp",
+        "limits": "cpp",
+        "string": "cpp"
     }
 }
