@@ -56,8 +56,51 @@
  */
 class Solution {
 public:
+    //后序遍历+前缀和+hash
     int pathSum(TreeNode* root, int sum) {
-        
+        if(!root){
+            return 0;
+        }
+        int res=0,nowsum=0;
+        unordered_map<int,int> ump;
+        stack<TreeNode*> s;
+        TreeNode* pNode=root,*preNode=NULL;
+        while(pNode||!s.empty()){
+            while(pNode){
+                nowsum+=pNode->val;
+                if(ump.find(nowsum)!=ump.end()){
+                    ump[nowsum]++;
+                }
+                else{
+                    ump[nowsum]=1;
+                }
+                s.push(pNode);
+                pNode=pNode->left;
+            }
+            pNode=s.top();
+            if(pNode->right==NULL||pNode->right==preNode){
+                if(ump.find(nowsum-sum)!=ump.end()){
+                    if(sum==0){
+                        res+=ump[nowsum-sum]-1;
+                    }
+                    else{
+                        res+=ump[nowsum-sum];
+                    }
+                }
+                if(nowsum==sum){
+                    res++;
+                }
+                ump[nowsum]--;
+                nowsum-=pNode->val;
+                preNode=pNode;
+                s.pop();
+                pNode=NULL;
+            }
+            else{
+                pNode=pNode->right;
+            }
+        }
+        return res;
     }
 };
 // @lc code=end
